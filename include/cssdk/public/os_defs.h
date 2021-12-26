@@ -52,8 +52,9 @@ constexpr auto MAX_PATH = PATH_MAX;
 
 #undef MSVC_COMPILER
 #undef GCC_COMPILER
-#undef INTEL_COMPILER
 #undef CLANG_COMPILER
+#undef INTEL_COMPILER
+#undef INTEL_LLVM_COMPILER
 
 #undef DLLEXPORT
 #undef NOINLINE
@@ -71,6 +72,8 @@ constexpr auto MAX_PATH = PATH_MAX;
 
 #ifdef _MSC_VER
 #define MSVC_COMPILER
+#elif defined(__INTEL_LLVM_COMPILER)
+#define INTEL_LLVM_COMPILER
 #elif defined(__INTEL_COMPILER)
 #define INTEL_COMPILER
 #elif !defined(__llvm__) && (defined(__GNUC__) || defined(__GNUG__))
@@ -82,7 +85,7 @@ constexpr auto MAX_PATH = PATH_MAX;
 // DLLEXPORT
 #ifdef MSVC_COMPILER
 #define DLLEXPORT __declspec(dllexport)
-#elif defined(CLANG_COMPILER)
+#elif defined(CLANG_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #define DLLEXPORT __attribute__((visibility("default")))
 #elif defined(GCC_COMPILER) || defined(INTEL_COMPILER)
 #define DLLEXPORT __attribute__((visibility("default"), externally_visible))
@@ -91,14 +94,14 @@ constexpr auto MAX_PATH = PATH_MAX;
 // NOINLINE
 #ifdef MSVC_COMPILER
 #define NOINLINE __declspec(noinline)
-#elif defined(GCC_COMPILER) || defined(INTEL_COMPILER) || defined(CLANG_COMPILER)
+#elif defined(GCC_COMPILER) || defined(CLANG_COMPILER) || defined(INTEL_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #define NOINLINE __attribute__((noinline))
 #endif
 
 // INLINE_STATIC
 #ifdef MSVC_COMPILER
 #define INLINE_STATIC FORCEINLINE static
-#elif defined(GCC_COMPILER) || defined(INTEL_COMPILER) || defined(CLANG_COMPILER)
+#elif defined(GCC_COMPILER) || defined(CLANG_COMPILER) || defined(INTEL_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #undef FORCEINLINE
 #define FORCEINLINE __attribute__((always_inline)) inline
 #define INLINE_STATIC __attribute__((always_inline)) static inline
@@ -107,7 +110,7 @@ constexpr auto MAX_PATH = PATH_MAX;
 // FORCE_STACK_ALIGN
 #ifdef MSVC_COMPILER
 #define FORCE_STACK_ALIGN
-#elif defined(GCC_COMPILER) || defined(INTEL_COMPILER) || defined(CLANG_COMPILER)
+#elif defined(GCC_COMPILER) || defined(CLANG_COMPILER) || defined(INTEL_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #define FORCE_STACK_ALIGN __attribute__((force_align_arg_pointer))
 #endif
 
@@ -115,7 +118,7 @@ constexpr auto MAX_PATH = PATH_MAX;
 #ifdef MSVC_COMPILER
 #define LIKELY(x) (x)
 #define UNLIKELY(x) (x)
-#elif defined(GCC_COMPILER) || defined(INTEL_COMPILER) || defined(CLANG_COMPILER)
+#elif defined(GCC_COMPILER) || defined(CLANG_COMPILER) || defined(INTEL_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #define LIKELY(x) __builtin_expect(!!(x), 1)
 #define UNLIKELY(x) __builtin_expect(!!(x), 0)
 #endif
@@ -133,7 +136,7 @@ constexpr auto MAX_PATH = PATH_MAX;
     };                   \
     static f##_t_ f##_;  \
     static void f(void)
-#elif defined(GCC_COMPILER) || defined(INTEL_COMPILER) || defined(CLANG_COMPILER)
+#elif defined(GCC_COMPILER) || defined(CLANG_COMPILER) || defined(INTEL_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #define AT_LOADED(f)                                        \
     __attribute__((constructor, used)) static void f(void); \
     static void f(void)
@@ -143,7 +146,7 @@ constexpr auto MAX_PATH = PATH_MAX;
 // ATTR_MINSIZE
 #ifdef GCC_COMPILER
 #define ATTR_MINSIZE [[gnu::optimize("-Os")]]
-#elif defined(CLANG_COMPILER)
+#elif defined(CLANG_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #define ATTR_MINSIZE [[clang::minsize]]
 #else
 #define ATTR_MINSIZE
@@ -152,7 +155,7 @@ constexpr auto MAX_PATH = PATH_MAX;
 // ATTR_MINSIZE_INLINE
 #ifdef GCC_COMPILER
 #define ATTR_MINSIZE_INLINE [[gnu::always_inline, gnu::optimize("-Os")]]
-#elif defined(CLANG_COMPILER)
+#elif defined(CLANG_COMPILER) || defined(INTEL_LLVM_COMPILER)
 #define ATTR_MINSIZE_INLINE [[gnu::always_inline, clang::minsize]]
 #elif !defined(MSVC_COMPILER)
 #define ATTR_MINSIZE_INLINE [[gnu::always_inline]]
