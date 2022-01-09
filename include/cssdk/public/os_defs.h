@@ -63,6 +63,7 @@ constexpr auto MAX_PATH = PATH_MAX;
 #undef LIKELY
 #undef UNLIKELY
 #undef AT_LOADED
+#undef ATTR_CONST
 #undef ATTR_MINSIZE
 #undef ATTR_MINSIZE_INLINE
 #undef ATTR_OPTIMIZE
@@ -143,6 +144,13 @@ constexpr auto MAX_PATH = PATH_MAX;
 #endif
 
 #ifdef NDEBUG
+// ATTR_CONST
+#ifndef _MSC_VER
+#define ATTR_CONST [[gnu::const]]
+#else
+#define ATTR_CONST
+#endif
+
 // ATTR_MINSIZE
 #ifdef GCC_COMPILER
 #define ATTR_MINSIZE [[gnu::optimize("-Os")]]
@@ -197,6 +205,7 @@ constexpr auto MAX_PATH = PATH_MAX;
 #define ATTR_OPTIMIZE_HOT_INLINE FORCEINLINE
 #endif
 #else
+#define ATTR_CONST
 #define ATTR_MINSIZE
 #define ATTR_MINSIZE_INLINE
 #define ATTR_OPTIMIZE
