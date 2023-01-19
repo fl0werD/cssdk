@@ -1408,7 +1408,7 @@ namespace cssdk
         /**
          * @brief N/D
         */
-        ~HalfLifeMultiplay() override = 0;
+        ~HalfLifeMultiplay() override = default;
 
         /**
          * @brief N/D
