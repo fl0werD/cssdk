@@ -690,7 +690,7 @@ namespace cssdk
         /**
          * @brief N/D
         */
-        virtual ~GameRules() = 0;
+        virtual ~GameRules() = default;
 
         /**
          * @brief Fill skill data struct with proper values.
