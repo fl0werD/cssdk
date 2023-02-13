@@ -46,17 +46,17 @@ namespace cssdk
 {
     /**
      * @brief N/D
-    */
+     */
     constexpr auto REGAMEDLL_API_VERSION_MAJOR = 5;
 
     /**
      * @brief N/D
-    */
-    constexpr auto REGAMEDLL_API_VERSION_MINOR = 21;
+     */
+    constexpr auto REGAMEDLL_API_VERSION_MINOR = 22;
 
     /**
      * @brief N/D
-    */
+     */
     constexpr auto VREGAMEDLL_API_VERSION = "VRE_GAMEDLL_API_VERSION001";
 
     // PlayerBase::Spawn hook
@@ -556,6 +556,10 @@ namespace cssdk
     using ReHookPlayerBaseJoiningThink = IHookChainClass<void, PlayerBase>;
     using ReHookRegistryPlayerBaseJoiningThink = IHookChainClassRegistry<void, PlayerBase>;
 
+    // FreeGameRules hook
+    using ReHookFreeGameRules = IHookChain<void, GameRules**>;
+    using ReHookRegistryFreeGameRules = IHookChainRegistry<void, GameRules**>;
+
     class IReGameDllHookChains // NOLINT(cppcoreguidelines-special-member-functions)
     {
     public:
@@ -681,79 +685,80 @@ namespace cssdk
         virtual ReHookRegistryPlayerPain* PlayerBasePain() = 0;
         virtual ReHookRegistryPlayerBaseDeathSound* PlayerBaseDeathSound() = 0;
         virtual ReHookRegistryPlayerBaseJoiningThink* PlayerBaseJoiningThink() = 0;
+        virtual ReHookRegistryFreeGameRules* FreeGameRules() = 0;
     };
 
     struct RegamedllFuncs
     {
         /**
          * @brief N/D
-        */
+         */
         Edict* (*create_named_entity2)(Strind class_name){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*change_string)(char*& dest, const char* source){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*radius_damage)(Vector src, EntityVars* inflictor, EntityVars* attacker, float damage, float radius,
                               int class_ignore, int damage_type){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*clear_multi_damage)(){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*apply_multi_damage)(EntityVars* inflictor, EntityVars* attacker){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*add_multi_damage)(EntityVars* inflictor, EntityBase* entity, float damage, int damage_type){};
 
         /**
          * @brief N/D
-        */
+         */
         EntityBase* (*find_entity_by_string)(EntityBase* start_entity, const char* keyword, const char* value){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*add_entity_hash_value)(EntityVars* ent_vars, const char* value, HashType field_type){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*remove_entity_hash_value)(EntityVars* ent_vars, const char* value, HashType field_type){};
 
         /**
          * @brief N/D
-        */
+         */
         int (*cmd_argc)(){};
 
         /**
          * @brief N/D
-        */
+         */
         const char* (*cmd_argv)(int i){};
 
         /**
          * @brief N/D
-        */
+         */
         Grenade* (*plant_bomb)(EntityVars* owner, Vector& start, Vector& velocity){};
 
         /**
          * @brief N/D
-        */
+         */
         Gib* (*spawn_head_gib)(EntityVars* victim){};
 
         /**
          * @brief N/D
-        */
+         */
         void (*spawn_random_gibs)(EntityVars* victim, int gibs, int human){};
     };
 
@@ -762,87 +767,87 @@ namespace cssdk
     public:
         /**
          * @brief N/D
-        */
+         */
         virtual ~IReGameDllApi() = default;
 
         /**
          * @brief N/D
-        */
+         */
         virtual int GetMajorVersion() = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual int GetMinorVersion() = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual const RegamedllFuncs* GetFuncs() = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual IReGameDllHookChains* GetHookChains() = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual GameRules* GetGameRules() = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual WeaponInfoStruct* GetWeaponInfo(WeaponId weapon) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual WeaponInfoStruct* GetWeaponInfo(const char* weapon) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual PlayerMove* GetPlayerMove() = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual WeaponSlotInfo* GetWeaponSlot(WeaponId weapon) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual WeaponSlotInfo* GetWeaponSlot(const char* weapon) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual ItemInfo* GetItemInfo(WeaponId weapon) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual AmmoInfo* GetAmmoInfo(AmmoType ammo) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual AmmoInfoStruct* GetAmmoInfoEx(AmmoType ammo) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual AmmoInfoStruct* GetAmmoInfoEx(const char* ammo) = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual bool CheckCsEntityVersion(const char* version) const = 0;
 
         /**
          * @brief N/D
-        */
+         */
         virtual bool CheckGameRulesVersion(const char* version) const = 0;
     };
 }
