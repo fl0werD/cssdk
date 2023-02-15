@@ -545,16 +545,16 @@ namespace cssdk
     using ReHookRegistryPlayerObserverFindNextPlayer = IHookChainClassRegistry<void, PlayerBase, bool, const char*>;
 
     // CBasePlayer::Pain hook
-    using ReHookPlayerPain = IHookChainClass<void, PlayerBase, int, bool>;
-    using ReHookRegistryPlayerPain = IHookChainClassRegistry<void, PlayerBase, int, bool>;
+    using ReHookPlayerPain = IHookChainClass<void, PlayerBase, HitBoxGroup, bool>;
+    using ReHookRegistryPlayerPain = IHookChainClassRegistry<void, PlayerBase, HitBoxGroup, bool>;
 
     // CBasePlayer::DeathSound hook
-    using ReHookPlayerBaseDeathSound = IHookChainClass<void, PlayerBase>;
-    using ReHookRegistryPlayerBaseDeathSound = IHookChainClassRegistry<void, PlayerBase>;
+    using ReHookPlayerDeathSound = IHookChainClass<void, PlayerBase>;
+    using ReHookRegistryPlayerDeathSound = IHookChainClassRegistry<void, PlayerBase>;
 
     // CBasePlayer::JoiningThink hook
-    using ReHookPlayerBaseJoiningThink = IHookChainClass<void, PlayerBase>;
-    using ReHookRegistryPlayerBaseJoiningThink = IHookChainClassRegistry<void, PlayerBase>;
+    using ReHookPlayerJoiningThink = IHookChainClass<void, PlayerBase>;
+    using ReHookRegistryPlayerJoiningThink = IHookChainClassRegistry<void, PlayerBase>;
 
     // FreeGameRules hook
     using ReHookFreeGameRules = IHookChain<void, GameRules**>;
@@ -682,9 +682,9 @@ namespace cssdk
         virtual ReHookRegistryEntityBaseFireBullets3* EntityBaseFireBullets3() = 0;
         virtual ReHookRegistryPlayerObserverSetMode* PlayerObserverSetMode() = 0;
         virtual ReHookRegistryPlayerObserverFindNextPlayer* PlayerObserverFindNextPlayer() = 0;
-        virtual ReHookRegistryPlayerPain* PlayerBasePain() = 0;
-        virtual ReHookRegistryPlayerBaseDeathSound* PlayerBaseDeathSound() = 0;
-        virtual ReHookRegistryPlayerBaseJoiningThink* PlayerBaseJoiningThink() = 0;
+        virtual ReHookRegistryPlayerPain* PlayerPain() = 0;
+        virtual ReHookRegistryPlayerDeathSound* PlayerDeathSound() = 0;
+        virtual ReHookRegistryPlayerJoiningThink* PlayerJoiningThink() = 0;
         virtual ReHookRegistryFreeGameRules* FreeGameRules() = 0;
     };
 

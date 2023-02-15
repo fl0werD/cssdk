@@ -308,6 +308,21 @@ namespace cssdk
         /**
          * @brief N/D
          */
+        virtual void Reset();
+
+        /**
+         * @brief N/D
+         */
+        virtual void OnSpawnEquip(bool addDefault = true, bool equipGame = true);
+
+        /**
+         * @brief N/D
+         */
+        virtual void SetScoreboardAttributes(PlayerBase* destination = nullptr);
+
+        /**
+         * @brief N/D
+         */
         char model[32]{};
 
         /**
